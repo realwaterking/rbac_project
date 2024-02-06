@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.aqua.rbaccore.model.entity.FireFacility">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="facilityname" column="facilityName" jdbcType="VARCHAR"/>
+            <result property="facilityName" column="facilityName" jdbcType="VARCHAR"/>
             <result property="location" column="location" jdbcType="VARCHAR"/>
             <result property="type" column="type" jdbcType="VARCHAR"/>
             <result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
@@ -14,10 +14,10 @@
             <result property="capacity" column="capacity" jdbcType="INTEGER"/>
             <result property="installationdate" column="installationDate" jdbcType="TIMESTAMP"/>
             <result property="lastinspectiondate" column="lastInspectionDate" jdbcType="TIMESTAMP"/>
-            <result property="isactive" column="isActive" jdbcType="TINYINT"/>
-            <result property="createtime" column="createTime" jdbcType="TIMESTAMP"/>
-            <result property="updatetime" column="updateTime" jdbcType="TIMESTAMP"/>
-            <result property="isdelete" column="isDelete" jdbcType="TINYINT"/>
+            <result property="isActive" column="isActive" jdbcType="TINYINT"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
