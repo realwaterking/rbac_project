@@ -4,9 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 消防设备信息表
@@ -24,7 +25,7 @@ public class FireFacility implements Serializable {
     /**
      * 消防设备名称
      */
-    private String facilityname;
+    private String facilityName;
 
     /**
      * 消防设备所在地
@@ -64,22 +65,22 @@ public class FireFacility implements Serializable {
     /**
      * 消防设施启用状态
      */
-    private Integer isactive;
+    private Integer isActive;
 
     /**
      * 创建时间
      */
-    private Date createtime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-    private Date updatetime;
+    private Date updateTime;
 
     /**
      * 是否删除（0-未删除， 1-已删除）
      */
-    private Integer isdelete;
+    private Integer isDelete;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

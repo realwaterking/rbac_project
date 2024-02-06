@@ -52,15 +52,4 @@ public interface UserService extends IService<User> {
     long userRegister(String username, String userAccount, String userPassword, String checkPassword
             , String phoneNumber);
 
-    /**
-     * 用户后期手动添加手机号码
-     * @param userAccount
-     * @param phoneNumber
-     * @return
-     */
-    long addPhoneNumber(String userAccount, String phoneNumber);
-
-
-
-
 }
