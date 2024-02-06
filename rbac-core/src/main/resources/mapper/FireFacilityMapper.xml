@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aqua.rbaccore.mapper.FireFacilityMapper">
+
+    <resultMap id="BaseResultMap" type="com.aqua.rbaccore.model.entity.FireFacility">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="facilityname" column="facilityName" jdbcType="VARCHAR"/>
+            <result property="location" column="location" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+            <result property="model" column="model" jdbcType="VARCHAR"/>
+            <result property="capacity" column="capacity" jdbcType="INTEGER"/>
+            <result property="installationdate" column="installationDate" jdbcType="TIMESTAMP"/>
+            <result property="lastinspectiondate" column="lastInspectionDate" jdbcType="TIMESTAMP"/>
+            <result property="isactive" column="isActive" jdbcType="TINYINT"/>
+            <result property="createtime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updatetime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isdelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,facilityName,location,
+        type,manufacturer,model,
+        capacity,installationDate,lastInspectionDate,
+        isActive,createTime,updateTime,
+        isDelete
+    </sql>
+</mapper>
