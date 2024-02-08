@@ -106,16 +106,12 @@ public class FireFacilityController {
 
     /**
      * 获取消防设备信息列表
-     * @param fireFacilityQueryRequest
      * @return
      */
     @GetMapping("/list")
     @AuthCheck(permissionName = "获取消防设备信息列表的权限", requirePermission = "fireFacility:selectList")
-    public BaseResponse<List<FireFacilityVO>> listFireFacility(FireFacilityQueryRequest fireFacilityQueryRequest) {
+    public BaseResponse<List<FireFacilityVO>> listFireFacility() {
         FireFacility fireFacilityQuery = new FireFacility();
-        if (fireFacilityQueryRequest != null) {
-            BeanUtils.copyProperties(fireFacilityQueryRequest, fireFacilityQuery);
-        }
         QueryWrapper<FireFacility> queryWrapper = new QueryWrapper<>(fireFacilityQuery);
         List<FireFacility> fireFacilityList = fireFacilityService.list(queryWrapper);
         List<FireFacilityVO> fireFacilityVOList = fireFacilityList.stream().map(fireFacility -> {

@@ -70,7 +70,7 @@ create table if not exists fire_facility(
     isDelete TINYINT default 0 not null comment '是否删除（0-未删除， 1-已删除）'
 )comment '消防设备信息表';
 
-create table if not exists fire_facility_data(
+create table if not exists fire_data(
     id bigint not null auto_increment comment '报警数据表主键' primary key ,
     temperature float comment '环境温度',
     humidity float comment '湿度',
@@ -86,3 +86,14 @@ create table if not exists fire_facility_data(
     alarmLocation varchar(256) comment '报警位置',
     foreign key (deviceId) references fire_facility(id)
 )comment '消防设备产生报警数据记录表';
+
+create table if not exists fire_maintenance(
+    id bigint not null auto_increment comment '日常维护记录表主键' primary key ,
+    deviceId bigint not null comment '设备ID',
+    maintenanceType varchar(256) comment '维护类型',
+    maintenanceDesc varchar(512) comment '维护描述',
+    maintenancePerson varchar(256) not null comment '维护人员',
+    maintenanceResult varchar(128) comment '记录维护的结果 (正常, 异常, 修复完成)',
+    maintenanceDate DATETIME default current_timestamp not null comment '维护日期',
+    foreign key (deviceId) references fire_facility(id)
+)comment '消防设备日常维护记录表';
