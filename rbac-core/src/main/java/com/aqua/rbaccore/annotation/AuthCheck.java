@@ -21,9 +21,15 @@ public @interface AuthCheck {
     String[] anyRole() default "";
 
     /**
-     * 必须有某个角色
+     * 权限名称
+     * @return
+     */
+    String permissionName() default "";
+
+    /**
+     * 必须有某个权限
      *
      * @return
      */
-    String mustRole() default "";
+    String requirePermission() default "";
 }

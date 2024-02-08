@@ -1,9 +1,11 @@
 package com.aqua.rbaccore.controller;
 
+
 import com.aqua.rbaccommon.common.BaseResponse;
 import com.aqua.rbaccommon.common.DeleteRequest;
 import com.aqua.rbaccommon.common.ErrorCode;
 import com.aqua.rbaccommon.common.ResultUtils;
+import com.aqua.rbaccore.annotation.AuthCheck;
 import com.aqua.rbaccore.exception.BusinessException;
 import com.aqua.rbaccore.model.dto.permission.PermissionAddRequest;
 import com.aqua.rbaccore.model.dto.permission.PermissionQueryRequest;
@@ -14,11 +16,11 @@ import com.aqua.rbaccore.service.PermissionService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PermissionController {
 
+
     @Resource
     private PermissionService permissionService;
 
@@ -40,6 +43,7 @@ public class PermissionController {
      * @return
      */
     @PostMapping("/add")
+    @AuthCheck(permissionName = "添加权限的权限", requirePermission = "permission:access")
     public BaseResponse<Long> addPermission(@RequestBody PermissionAddRequest permissionAddRequest) {
         if (permissionAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -59,6 +63,7 @@ public class PermissionController {
      * @return
      */
     @PostMapping("/delete")
+    @AuthCheck(permissionName = "删除权限的权限", requirePermission = "permission:delete")
     public BaseResponse<Boolean> deletePermission(@RequestBody DeleteRequest deleteRequest) {
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -73,6 +78,7 @@ public class PermissionController {
      * @return
      */
     @PostMapping("/update")
+    @AuthCheck(permissionName = "更新权限的权限", requirePermission = "permission:update")
     public BaseResponse<Boolean> updatePermission(@RequestBody PermissionUpdateRequest permissionUpdateRequest) {
         if (permissionUpdateRequest == null || permissionUpdateRequest.getId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -89,6 +95,7 @@ public class PermissionController {
      * @return
      */
     @GetMapping("/get/{id}")
+    @AuthCheck(permissionName = "获取单个权限信息的权限", requirePermission = "permission:selectOne")
     public BaseResponse<PermissionVO> getPermissionById(@PathVariable int id) {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -105,6 +112,7 @@ public class PermissionController {
      * @return
      */
     @GetMapping("/list")
+    @AuthCheck(permissionName = "获取所有权限的权限", requirePermission = "permission:selectList")
     public BaseResponse<List<PermissionVO>> listPermission(PermissionQueryRequest permissionQueryRequest) {
         Permission permissionQuery = new Permission();
         if (permissionQueryRequest != null) {
@@ -126,6 +134,7 @@ public class PermissionController {
      * @return
      */
     @GetMapping("/list/page")
+    @AuthCheck(permissionName = "分页查询权限的权限", requirePermission = "permission:selectByPage")
     public BaseResponse<Page<PermissionVO>> listPermissionByPage(PermissionQueryRequest permissionQueryRequest) {
         long current = 1;
         long size = 5;

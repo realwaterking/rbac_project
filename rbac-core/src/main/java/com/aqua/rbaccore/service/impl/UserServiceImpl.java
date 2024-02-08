@@ -9,12 +9,13 @@ import com.aqua.rbaccore.model.entity.User;
 import com.aqua.rbaccore.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import static com.aqua.rbaccore.constant.RoleConstant.USER_LOGIN_STATE;
 
@@ -93,7 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public String getUserRolePermission(HttpServletRequest request) {
+    public String getLoginUserPermission(HttpServletRequest request) {
         return null;
     }
 
@@ -112,7 +113,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if(!userPassword.equals(checkPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "两次输入的密码不一致");
         }
-        if (!phoneNumber.matches("^1[3, 5, 6, 7, 8, 9]/d{9}")) {
+        if (!phoneNumber.matches("^1[3, 5, 6, 7, 8, 9]\\d{9}$")) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "手机号格式不正确");
         }
 
@@ -134,6 +135,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             user.setUsername(username);
             user.setUserAccount(userAccount);
             user.setPassword(encryptPassword);
+            user.setPhoneNumber(phoneNumber);
             user.setAccessKey(accessKey);
             user.setSecretKey(secretKey);
             boolean saveResult = this.save(user);

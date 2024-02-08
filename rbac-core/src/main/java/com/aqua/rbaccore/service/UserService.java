@@ -2,7 +2,7 @@ package com.aqua.rbaccore.service;
 
 import com.aqua.rbaccore.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 /**
 * @author 70742
@@ -40,7 +40,7 @@ public interface UserService extends IService<User> {
      * @param request
      * @return
      */
-    String getUserRolePermission(HttpServletRequest request);
+    String getLoginUserPermission(HttpServletRequest request);
 
     /**
      * 用户注册

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aqua.rbaccore.mapper.FireFacilityMapper">
+<mapper namespace="com.aqua.rbacbusiness.mapper.FireFacilityMapper">
 
-    <resultMap id="BaseResultMap" type="com.aqua.rbaccore.model.entity.FireFacility">
+    <resultMap id="BaseResultMap" type="com.aqua.rbacbusiness.model.entity.FireFacility">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="facilityName" column="facilityName" jdbcType="VARCHAR"/>
             <result property="location" column="location" jdbcType="VARCHAR"/>

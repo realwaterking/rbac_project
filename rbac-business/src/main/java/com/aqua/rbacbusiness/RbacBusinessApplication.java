@@ -1,13 +1,13 @@
-package com.aqua.rbaccommon;
+package com.aqua.rbacbusiness;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RbacCommonApplication {
+public class RbacBusinessApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RbacCommonApplication.class, args);
+        SpringApplication.run(RbacBusinessApplication.class, args);
     }
 
 }

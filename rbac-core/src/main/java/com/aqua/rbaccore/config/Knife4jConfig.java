@@ -1,4 +1,4 @@
-package com.aqua.rbaccommon.config;
+package com.aqua.rbaccore.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

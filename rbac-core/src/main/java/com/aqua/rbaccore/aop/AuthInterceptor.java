@@ -2,11 +2,12 @@ package com.aqua.rbaccore.aop;
 
 import com.aqua.rbaccore.annotation.AuthCheck;
 import com.aqua.rbaccore.service.UserService;
-import jakarta.annotation.Resource;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * @author water king

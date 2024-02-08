@@ -1,4 +1,4 @@
-package com.aqua.rbaccommon.config;
+package com.aqua.rbaccore.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;

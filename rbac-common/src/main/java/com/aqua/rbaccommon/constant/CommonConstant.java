@@ -1,4 +1,4 @@
-package com.aqua.rbaccore.constant;
+package com.aqua.rbaccommon.constant;
 
 /**
  * @author water king

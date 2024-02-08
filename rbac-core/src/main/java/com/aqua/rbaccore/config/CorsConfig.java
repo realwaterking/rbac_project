@@ -1,4 +1,5 @@
-package com.aqua.rbaccommon.config;
+package com.aqua.rbaccore.config;
+
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

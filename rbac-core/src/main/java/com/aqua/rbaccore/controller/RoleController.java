@@ -4,6 +4,7 @@ import com.aqua.rbaccommon.common.BaseResponse;
 import com.aqua.rbaccommon.common.DeleteRequest;
 import com.aqua.rbaccommon.common.ErrorCode;
 import com.aqua.rbaccommon.common.ResultUtils;
+import com.aqua.rbaccore.annotation.AuthCheck;
 import com.aqua.rbaccore.exception.BusinessException;
 import com.aqua.rbaccore.model.dto.role.RoleAddRequest;
 import com.aqua.rbaccore.model.dto.role.RoleQueryRequest;
@@ -14,11 +15,11 @@ import com.aqua.rbaccore.service.RoleService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,7 @@ public class RoleController {
      * @return
      */
     @PostMapping("/add")
+    @AuthCheck(permissionName = "添加角色权限", requirePermission = "role:add")
     public BaseResponse<Long> addRole(@RequestBody RoleAddRequest roleAddRequest) {
         if (roleAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -54,11 +56,12 @@ public class RoleController {
     }
 
     /**
-     * 删除用户
+     * 删除角色
      * @param deleteRequest
      * @return
      */
     @PostMapping("/delete")
+    @AuthCheck(permissionName = "删除角色权限", requirePermission = "role:delete")
     public BaseResponse<Boolean> deleteRole(@RequestBody DeleteRequest deleteRequest) {
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -73,6 +76,7 @@ public class RoleController {
      * @return
      */
     @PostMapping("/update")
+    @AuthCheck(permissionName = "更新角色权限", requirePermission = "role:update")
     public BaseResponse<Boolean> updateRole(@RequestBody RoleUpdateRequest roleUpdateRequest) {
         if (roleUpdateRequest == null || roleUpdateRequest.getId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -89,6 +93,7 @@ public class RoleController {
      * @return
      */
     @GetMapping("/get/{id}")
+    @AuthCheck(permissionName = "获取单个角色信息权限", requirePermission = "role:selectOne")
     public BaseResponse<RoleVO> getRoleById(@PathVariable int id) {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -105,6 +110,7 @@ public class RoleController {
      * @return
      */
     @GetMapping("/list")
+    @AuthCheck(permissionName = "获取角色列表权限", requirePermission = "role:selectUserList")
     public BaseResponse<List<RoleVO>> listRole(RoleQueryRequest roleQueryRequest) {
         Role roleQuery = new Role();
         if (roleQueryRequest != null) {
@@ -126,6 +132,7 @@ public class RoleController {
      * @return
      */
     @GetMapping("/list/page")
+    @AuthCheck(permissionName = "分页查询角色权限", requirePermission = "role:selectByPage")
     public BaseResponse<Page<RoleVO>> listUserByPage(RoleQueryRequest roleQueryRequest) {
         long current = 1;
         long size = 5;

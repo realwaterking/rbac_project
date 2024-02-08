@@ -1,6 +1,6 @@
-package com.aqua.rbaccore.service;
+package com.aqua.rbacbusiness.serivce;
 
-import com.aqua.rbaccore.model.entity.FireFacility;
+import com.aqua.rbacbusiness.model.entity.FireFacility;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

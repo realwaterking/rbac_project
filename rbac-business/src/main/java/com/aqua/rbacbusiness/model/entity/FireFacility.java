@@ -1,4 +1,4 @@
-package com.aqua.rbaccore.model.entity;
+package com.aqua.rbacbusiness.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

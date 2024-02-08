@@ -1,6 +1,6 @@
 package com.aqua.rbaccommon.common;
 
-import com.aqua.rbaccore.constant.CommonConstant;
+import com.aqua.rbaccommon.constant.CommonConstant;
 import lombok.Data;
 
 /**

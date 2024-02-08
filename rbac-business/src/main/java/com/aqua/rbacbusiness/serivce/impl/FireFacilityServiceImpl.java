@@ -1,9 +1,9 @@
-package com.aqua.rbaccore.service.impl;
+package com.aqua.rbacbusiness.serivce.impl;
 
+import com.aqua.rbacbusiness.mapper.FireFacilityMapper;
+import com.aqua.rbacbusiness.model.entity.FireFacility;
+import com.aqua.rbacbusiness.serivce.FireFacilityService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.aqua.rbaccore.model.entity.FireFacility;
-import com.aqua.rbaccore.service.FireFacilityService;
-import com.aqua.rbaccore.mapper.FireFacilityMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class FireFacilityServiceImpl extends ServiceImpl<FireFacilityMapper, FireFacility>
-    implements FireFacilityService{
+    implements FireFacilityService {
 
 }
 
