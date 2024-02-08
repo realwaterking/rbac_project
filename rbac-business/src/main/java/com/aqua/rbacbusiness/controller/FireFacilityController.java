@@ -41,7 +41,7 @@ public class FireFacilityController {
      * @return
      */
     @PostMapping("/add")
-    @AuthCheck(permissionName = "添加消防设备的权限", requirePermission = "fireFacility:add")
+    @AuthCheck(permissionName = "添加消防设备的权限", requirePermission = "admin:fireFacility:add")
     public BaseResponse<Long> addFireFacility(@RequestBody FireFacilityAddRequest fireFacilityAddRequest) {
         if (fireFacilityAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -61,7 +61,7 @@ public class FireFacilityController {
      * @return
      */
     @PostMapping("/delete")
-    @AuthCheck(permissionName = "删除消防设备的权限", requirePermission = "fireFacility:delete")
+    @AuthCheck(permissionName = "删除消防设备的权限", requirePermission = "admin:fireFacility:delete")
     public BaseResponse<Boolean> deleteFireFacility(@RequestBody DeleteRequest deleteRequest) {
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -76,7 +76,7 @@ public class FireFacilityController {
      * @return
      */
     @PostMapping("/update")
-    @AuthCheck(permissionName = "更新消防设备信息的权限", requirePermission = "fireFacility:update")
+    @AuthCheck(permissionName = "更新消防设备信息的权限", requirePermission = "admin:fireFacility:update")
     public BaseResponse<Boolean> updateFireFacility(@RequestBody FireFacilityUpdateRequest fireFacilityUpdateRequest) {
         if (fireFacilityUpdateRequest == null || fireFacilityUpdateRequest.getId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -93,7 +93,7 @@ public class FireFacilityController {
      * @return
      */
     @GetMapping("/get/{id}")
-    @AuthCheck(permissionName = "获取单个消防设备信息的权限", requirePermission = "fireFacility:selectOne")
+    @AuthCheck(permissionName = "获取单个消防设备信息的权限", requirePermission = "admin:fireFacility:selectOne")
     public BaseResponse<FireFacilityVO> getFireFacilityById(@PathVariable int id) {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -106,16 +106,12 @@ public class FireFacilityController {
 
     /**
      * 获取消防设备信息列表
-     * @param fireFacilityQueryRequest
      * @return
      */
     @GetMapping("/list")
-    @AuthCheck(permissionName = "获取消防设备信息列表的权限", requirePermission = "fireFacility:selectList")
-    public BaseResponse<List<FireFacilityVO>> listFireFacility(FireFacilityQueryRequest fireFacilityQueryRequest) {
+    @AuthCheck(permissionName = "获取消防设备信息列表的权限", requirePermission = "admin:fireFacility:selectList")
+    public BaseResponse<List<FireFacilityVO>> listFireFacility() {
         FireFacility fireFacilityQuery = new FireFacility();
-        if (fireFacilityQueryRequest != null) {
-            BeanUtils.copyProperties(fireFacilityQueryRequest, fireFacilityQuery);
-        }
         QueryWrapper<FireFacility> queryWrapper = new QueryWrapper<>(fireFacilityQuery);
         List<FireFacility> fireFacilityList = fireFacilityService.list(queryWrapper);
         List<FireFacilityVO> fireFacilityVOList = fireFacilityList.stream().map(fireFacility -> {
@@ -132,7 +128,7 @@ public class FireFacilityController {
      * @return
      */
     @GetMapping("/list/page")
-    @AuthCheck(permissionName = "分页查询消防设备信息的权限", requirePermission = "fireFacility:selectByPage")
+    @AuthCheck(permissionName = "分页查询消防设备信息的权限", requirePermission = "admin:fireFacility:selectByPage")
     public BaseResponse<Page<FireFacilityVO>> listFireFacilityByPage(FireFacilityQueryRequest fireFacilityQueryRequest) {
         long current = 1;
         long size = 5;

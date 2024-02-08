@@ -106,16 +106,12 @@ public class RoleController {
 
     /**
      * 获取角色列表
-     * @param roleQueryRequest
      * @return
      */
     @GetMapping("/list")
     @AuthCheck(permissionName = "获取角色列表权限", requirePermission = "role:selectUserList")
-    public BaseResponse<List<RoleVO>> listRole(RoleQueryRequest roleQueryRequest) {
+    public BaseResponse<List<RoleVO>> listRole() {
         Role roleQuery = new Role();
-        if (roleQueryRequest != null) {
-            BeanUtils.copyProperties(roleQueryRequest, roleQuery);
-        }
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>(roleQuery);
         List<Role> roleList = roleService.list(queryWrapper);
         List<RoleVO> roleVOList = roleList.stream().map(role -> {

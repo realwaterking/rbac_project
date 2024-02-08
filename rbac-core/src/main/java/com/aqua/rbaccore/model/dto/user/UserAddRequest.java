@@ -13,10 +13,12 @@ public class UserAddRequest implements Serializable {
 
     private static final long serialVersionUID = 3191241716373120793L;
 
-    private String uername;
+    private String username;
 
     private String userAccount;
 
     private String phoneNumber;
+
+    private String location;
 
 }

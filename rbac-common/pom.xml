@@ -17,6 +17,10 @@
         <java.version>19</java.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId></groupId>
+            <artifactId></artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

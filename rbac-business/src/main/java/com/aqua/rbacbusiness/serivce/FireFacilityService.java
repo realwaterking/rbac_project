@@ -1,7 +1,10 @@
 package com.aqua.rbacbusiness.serivce;
 
 import com.aqua.rbacbusiness.model.entity.FireFacility;
+import com.aqua.rbacbusiness.model.vo.FireFacilityInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
 * @author 70742
@@ -10,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface FireFacilityService extends IService<FireFacility> {
 
+    List<FireFacilityInfoVO> getFireFacilities(String location);
 }

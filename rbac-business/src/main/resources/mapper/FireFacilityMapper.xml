@@ -27,4 +27,18 @@
         isActive,createTime,updateTime,
         isDelete
     </sql>
+    <select id="getFacilityCount" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM fire_facility
+        WHERE deviceId NOT IN (
+            SELECT deviceId
+            FROM fire_maintenance
+            WHERE lastMaintenance >= #{startDate}
+        )
+    </select>
+    <select id="getIsActive" resultType="java.lang.Long">
+        select isActive
+        from fire_facility
+        where fire_facility.id = #{id}
+    </select>
 </mapper>

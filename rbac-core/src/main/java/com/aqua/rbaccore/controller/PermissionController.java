@@ -108,16 +108,12 @@ public class PermissionController {
 
     /**
      * 获取权限列表
-     * @param permissionQueryRequest
      * @return
      */
     @GetMapping("/list")
     @AuthCheck(permissionName = "获取所有权限的权限", requirePermission = "permission:selectList")
-    public BaseResponse<List<PermissionVO>> listPermission(PermissionQueryRequest permissionQueryRequest) {
+    public BaseResponse<List<PermissionVO>> listPermission() {
         Permission permissionQuery = new Permission();
-        if (permissionQueryRequest != null) {
-            BeanUtils.copyProperties(permissionQueryRequest, permissionQuery);
-        }
         QueryWrapper<Permission> queryWrapper = new QueryWrapper<>(permissionQuery);
         List<Permission> permissionList = permissionService.list(queryWrapper);
         List<PermissionVO> permissionVOList = permissionList.stream().map(permission -> {

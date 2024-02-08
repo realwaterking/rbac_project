@@ -43,6 +43,11 @@ public class User implements Serializable {
     private String phoneNumber;
 
     /**
+     * 用户地址(社区)
+     */
+    private String location;
+
+    /**
      * accessKey
      */
     private String accessKey;

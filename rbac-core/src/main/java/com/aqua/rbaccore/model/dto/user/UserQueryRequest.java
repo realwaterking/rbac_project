@@ -25,6 +25,8 @@ public class UserQueryRequest extends PageRequest implements Serializable {
 
     private String phoneNumber;
 
+    private String location;
+
     private Date createTime;
 
     private Date updateTime;

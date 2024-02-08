@@ -3,6 +3,9 @@ package com.aqua.rbacbusiness.mapper;
 
 import com.aqua.rbacbusiness.model.entity.FireFacility;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
 
 /**
 * @author 70742
@@ -12,6 +15,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface FireFacilityMapper extends BaseMapper<FireFacility> {
 
+    Long getFacilityCount(@Param("startDate") Date startDate);
+
+    Long getIsActive(@Param("id") Long id);
 }
 
 

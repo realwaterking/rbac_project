@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author water king
@@ -15,31 +14,31 @@ import java.util.Date;
 @Data
 public class FireDataQueryRequest extends PageRequest implements Serializable {
 
-    private static final long serialVersionUID = 3191241716373120793L;
-
-    private Long id;
-
-    private float temperature;
-
-    private float humidity;
-
-    private float smokeConcentration;
-
-    private float gasConcentration;
-
-    private int illumination;
-
-    private String deviceStatus;
-
-    private Long deviceId;
-
-    private int batteryLever;
-
-    private int connectionStatus;
-
-    private String alarmType;
-
-    private Date alarmTime;
-
-    private String alarmLocation;
+//    private static final long serialVersionUID = 3191241716373120793L;
+//
+//    private Long id;
+//
+//    private float temperature;
+//
+//    private float humidity;
+//
+//    private float smokeConcentration;
+//
+//    private float gasConcentration;
+//
+//    private int illumination;
+//
+//    private String deviceStatus;
+//
+//    private Long deviceId;
+//
+//    private int batteryLever;
+//
+//    private int connectionStatus;
+//
+//    private String alarmType;
+//
+//    private Date alarmTime;
+//
+//    private String alarmLocation;
 }

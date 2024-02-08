@@ -2,6 +2,7 @@ package com.aqua.rbacbusiness.controller;
 
 import com.aqua.rbacbusiness.model.dto.firedata.FireDataAddRequest;
 import com.aqua.rbacbusiness.model.dto.firedata.FireDataQueryRequest;
+import com.aqua.rbacbusiness.model.dto.firedata.FireDataUpdateRequest;
 import com.aqua.rbacbusiness.model.entity.FireData;
 import com.aqua.rbacbusiness.model.vo.FireDataVO;
 import com.aqua.rbacbusiness.serivce.FireDataService;
@@ -69,20 +70,22 @@ public class FireDataController {
         return ResultUtils.success(b);
     }
 
-//    /**
-//     * 更新消防数据
-//     * @param fireDataUpdateRequest
-//     * @return
-//     */
-//    public BaseResponse<Boolean> updateFireData(@RequestBody FireDataUpdateRequest fireDataUpdateRequest) {
-//        if (fireDataUpdateRequest == null || fireDataUpdateRequest.getId() == null) {
-//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-//        }
-//        FireFacilityData fireFacilityData = new FireFacilityData();
-//        BeanUtils.copyProperties(fireDataUpdateRequest, fireFacilityData);
-//        boolean result = fireFacilityDataService.updateById(fireFacilityData);
-//        return ResultUtils.success(result);
-//    }
+    /**
+     * 更新消防数据
+     * @param fireDataUpdateRequest
+     * @return
+     */
+    @PostMapping("/update")
+    @AuthCheck(permissionName = "更新消防报警数据", requirePermission = "fireData:update")
+    public BaseResponse<Boolean> updateFireData(@RequestBody FireDataUpdateRequest fireDataUpdateRequest) {
+        if (fireDataUpdateRequest == null || fireDataUpdateRequest.getId() == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        FireData fireData = new FireData();
+        BeanUtils.copyProperties(fireDataUpdateRequest, fireData);
+        boolean result = fireDataService.updateById(fireData);
+        return ResultUtils.success(result);
+    }
 
     /**
      * 根据 id 获取单个消防报警信息
@@ -103,16 +106,12 @@ public class FireDataController {
 
     /**
      * 获取消防报警信息列表
-     * @param fireDataQueryRequest
      * @return
      */
     @GetMapping("/list")
     @AuthCheck(permissionName = "获取消防报警信息列表", requirePermission = "fireData:list")
-    public BaseResponse<List<FireDataVO>> listFireData(FireDataQueryRequest fireDataQueryRequest) {
+    public BaseResponse<List<FireDataVO>> listFireData() {
         FireData fireDataQuery = new FireData();
-        if (fireDataQueryRequest != null) {
-            BeanUtils.copyProperties(fireDataQueryRequest, fireDataQuery);
-        }
         QueryWrapper<FireData> queryWrapper = new QueryWrapper<>(fireDataQuery);
         List<FireData> fireDataList = fireDataService.list(queryWrapper);
         List<FireDataVO> fireDataVOList = fireDataList.stream().map(fireData -> {

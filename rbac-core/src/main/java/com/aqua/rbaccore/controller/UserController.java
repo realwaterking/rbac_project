@@ -184,17 +184,13 @@ public class UserController {
 
     /**
      * 获取用户列表
-     * @param userQueryRequest
      * @param request
      * @return
      */
     @GetMapping("/list")
     @AuthCheck(permissionName = "查询所有用户", requirePermission = "client:selectUserList")
-    public BaseResponse<List<UserVO>> listUser(UserQueryRequest userQueryRequest, HttpServletRequest request) {
+    public BaseResponse<List<UserVO>> listUser(HttpServletRequest request) {
         User userQuery = new User();
-        if (userQueryRequest != null) {
-            BeanUtils.copyProperties(userQueryRequest, userQuery);
-        }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>(userQuery);
         List<User> userList = userService.list(queryWrapper);
         List<UserVO> userVOList = userList.stream().map(user -> {

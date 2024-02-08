@@ -20,4 +20,6 @@ public class UserUpdateRequest implements Serializable {
     private String password;
 
     private String phoneNumber;
+
+    private String location;
 }

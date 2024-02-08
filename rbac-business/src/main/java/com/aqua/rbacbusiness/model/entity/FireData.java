@@ -82,6 +82,11 @@ public class FireData implements Serializable {
      */
     private String alarmLocation;
 
+    /**
+     * 报警次数
+     */
+    private Integer totalNum;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }
