@@ -2,6 +2,7 @@ package com.aqua.rbacbusiness.model.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Date;
  * @time 2024/2/7
  */
 @Data
-public class FireFacilityVO {
+public class FireFacilityVO implements Serializable {
 
     private static final long serialVersionUID = 3191241716373113L;
 
