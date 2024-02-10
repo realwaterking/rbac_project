@@ -52,6 +52,7 @@ public class AnalysisController {
 
     /**
      * 获取报警数前三的设备信息
+     *
      * @return
      */
     @GetMapping("/top/data/invoke")
@@ -81,6 +82,7 @@ public class AnalysisController {
 
     /**
      * 获取最近五条报警信息
+     *
      * @return
      */
     @GetMapping("/top/data/list")
@@ -106,6 +108,7 @@ public class AnalysisController {
 
     /**
      * 获取连接状态统计信息
+     *
      * @return
      */
     @GetMapping("/connection/status/count")
@@ -143,6 +146,7 @@ public class AnalysisController {
 
     /**
      * 获取近一个月内维护过和未维护过的设备数量
+     *
      * @return
      */
     @GetMapping("/maintenance/count")
