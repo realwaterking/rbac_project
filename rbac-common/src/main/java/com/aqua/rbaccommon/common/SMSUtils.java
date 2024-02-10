@@ -15,7 +15,7 @@ package com.aqua.rbaccommon.common;
 public class SMSUtils {
 
 //    public void sendSms(String phoneNumber) {
-//        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI5tPzBcaD3QAkkNQ4d9rg", "RcMmZK1ZkwCgwE7p3fWHuGJIUSlQaP");
+//        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI5tPzBcaD3QkNQ4d9rg", "RcMmZK1ZkwCg7p3fWHuGJIUSlQaP");
 //        IAcsClient client = new DefaultAcsClient(profile);
 //        CommonRequest request = new CommonRequest();
 //        request.setMethod(MethodType.POST);
