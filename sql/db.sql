@@ -99,3 +99,13 @@ create table if not exists fire_maintenance(
     maintenanceDate DATETIME default current_timestamp not null comment '维护日期',
     foreign key (deviceId) references fire_facility(id)
 )comment '消防设备日常维护记录表';
+
+create table if not exists dispatch_data(
+    id bigint not null  auto_increment comment '出警信息表主键' primary key ,
+    fireDataId bigint not null  comment '报警信息表主键',
+    userId bigint not null  comment '出警人id',
+    result varchar(256) not null comment '处理结果',
+    createTime DATETIME default current_timestamp not null comment '出警时间',
+    foreign key (fireDataId) references fire_data(id),
+    foreign key (userId) references user(id)
+)comment '出警记录表';
