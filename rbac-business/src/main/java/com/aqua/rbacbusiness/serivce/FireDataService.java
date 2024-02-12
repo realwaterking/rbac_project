@@ -13,4 +13,6 @@ import java.util.Map;
 public interface FireDataService extends IService<FireData> {
 
     Map<String, Long> getAlarmStatistics();
+
+    void load();
 }

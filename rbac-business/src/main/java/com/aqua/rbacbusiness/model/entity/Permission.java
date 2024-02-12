@@ -1,36 +1,35 @@
-package com.aqua.rbaccore.model.entity;
+package com.aqua.rbacbusiness.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
- * 用户角色关系表
- * @TableName user_role
+ * 权限信息表
+ * @TableName permission
  */
-@TableName(value ="user_role")
+@TableName(value ="permission")
 @Data
-public class UserRole implements Serializable {
+public class Permission implements Serializable {
     /**
-     * 用户角色关系表主键
+     * 权限主键
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 用户id
+     * 权限名称
      */
-    private Long userId;
+    private String permissionName;
 
     /**
-     * 角色id
+     * 权限描述
      */
-    private Long roleId;
+    private String permissionDesc;
 
     /**
      * 创建时间
@@ -46,6 +45,11 @@ public class UserRole implements Serializable {
      * 是否删除（0-未删除， 1-已删除）
      */
     private Integer isDelete;
+
+    /**
+     * 权限表达
+     */
+    private String requiredPermission;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

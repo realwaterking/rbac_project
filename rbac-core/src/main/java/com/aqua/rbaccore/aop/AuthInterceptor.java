@@ -4,8 +4,6 @@ import com.aqua.rbaccore.annotation.AuthCheck;
 import com.aqua.rbaccore.service.UserService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
@@ -13,8 +11,6 @@ import javax.annotation.Resource;
  * @author water king
  * @time 2024/2/6
  */
-@Aspect
-@Component
 public class AuthInterceptor {
 
     @Resource

@@ -18,9 +18,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 public class PermissionController {
 
 
-    @Resource
+    @Autowired
     private PermissionService permissionService;
 
     /**
@@ -150,5 +150,11 @@ public class PermissionController {
         }).collect(Collectors.toList());
         permissionVOPage.setRecords(permissionVOList);
         return ResultUtils.success(permissionVOPage);
+    }
+
+    @PostMapping("/load")
+    public BaseResponse<String> load() {
+        permissionService.load();
+        return ResultUtils.success("ok");
     }
 }

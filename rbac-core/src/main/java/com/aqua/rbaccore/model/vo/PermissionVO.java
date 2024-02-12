@@ -19,6 +19,8 @@ public class PermissionVO {
 
     private String permissionDesc;
 
+    private String requiredPermission;
+
     private Date createTime;
 
     private Date updateTime;

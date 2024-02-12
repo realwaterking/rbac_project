@@ -3,15 +3,23 @@ package com.aqua.rbacbusiness.serivce.impl;
 
 import com.aqua.rbacbusiness.mapper.FireDataMapper;
 import com.aqua.rbacbusiness.mapper.FireFacilityMapper;
+import com.aqua.rbacbusiness.mapper.PermissionMapper;
 import com.aqua.rbacbusiness.model.entity.FireData;
 import com.aqua.rbacbusiness.model.entity.FireFacility;
+import com.aqua.rbacbusiness.model.entity.Permission;
 import com.aqua.rbacbusiness.serivce.FireDataService;
+import com.aqua.rbaccore.annotation.AuthCheck;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +36,12 @@ public class FireDataServiceImpl extends ServiceImpl<FireDataMapper, FireData>
 
     @Resource
     private FireFacilityMapper fireFacilityMapper;
+
+    @Resource
+    private ApplicationContext applicationContext;
+
+    @Resource
+    private PermissionMapper permissionMapper;
 
     /**
      * 计算报警设备数和未报警设备数
@@ -51,6 +65,31 @@ public class FireDataServiceImpl extends ServiceImpl<FireDataMapper, FireData>
         statisticsMap.put("num_devices_without_alarm", numDevicesWithoutAlarm);
 
         return statisticsMap;
+    }
+
+    @Override
+    public void load() {
+        List<String> permissions = permissionMapper.selectPermissions();
+        Map<String, Object> map = applicationContext.getBeansWithAnnotation(RestController.class);
+        Collection<Object> controllers = map.values();
+        for (Object controller : controllers) {
+            Method[] methods = controller.getClass().getDeclaredMethods();
+            for (Method method : methods) {
+                AuthCheck annotation = method.getAnnotation(AuthCheck.class);
+                System.out.println(annotation);
+                if (annotation != null) {
+                    String permissionName = annotation.permissionName();
+                    String requirePermission = annotation.requirePermission();
+
+                    if (permissions.contains(requirePermission)) {
+                        Permission permission = new Permission();
+                        permission.setPermissionName(permissionName);
+                        permission.setRequiredPermission(requirePermission);
+                        permissionMapper.insert(permission);
+                    }
+                }
+            }
+        }
     }
 }
 

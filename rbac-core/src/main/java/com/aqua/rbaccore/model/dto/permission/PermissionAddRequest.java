@@ -16,4 +16,6 @@ public class PermissionAddRequest implements Serializable {
     private String PermissionName;
 
     private String PermissionDesc;
+
+    private String requiredPermission;
 }

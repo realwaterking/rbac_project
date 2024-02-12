@@ -17,11 +17,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,16 +38,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AnalysisController {
 
-    @Resource
+    @Autowired
     private FireDataMapper fireDataMapper;
 
-    @Resource
+    @Autowired
     private FireDataService fireDataService;
 
-    @Resource
+    @Autowired
     private FireMaintenanceService fireMaintenanceService;
 
-    @Resource
+    @Autowired
     private FireFacilityService fireFacilityService;
 
     /**

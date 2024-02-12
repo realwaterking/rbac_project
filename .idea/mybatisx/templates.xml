@@ -68,8 +68,8 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="FireMaintenance" />
-                  <option name="tableName" value="fire_maintenance" />
+                  <option name="className" value="Permission" />
+                  <option name="tableName" value="permission" />
                 </TableUIInfo>
               </list>
             </option>
