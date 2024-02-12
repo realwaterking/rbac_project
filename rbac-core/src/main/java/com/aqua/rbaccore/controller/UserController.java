@@ -16,9 +16,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserController {
 
-    @Resource
+    @Autowired
     private UserService userService;
 
     //region 登录相关
@@ -47,15 +47,7 @@ public class UserController {
         if (userRegisterRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        String username = userRegisterRequest.getUsername();
-        String userAccount = userRegisterRequest.getUserAccount();
-        String userPassword = userRegisterRequest.getUserPassword();
-        String checkPassword = userRegisterRequest.getCheckPassword();
-        String phoneNumber = userRegisterRequest.getPhoneNumber();
-        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)) {
-            return null;
-        }
-        long result = userService.userRegister(username, userAccount, userPassword, checkPassword, phoneNumber);
+        long result = userService.userRegister(userRegisterRequest);
         return ResultUtils.success(result);
     }
 
@@ -75,7 +67,7 @@ public class UserController {
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        User user = userService.userLogin(userAccount, userPassword, request);
+        User user = userService.userLogin(userLoginRequest, request);
         return ResultUtils.success(user);
     }
 
@@ -112,23 +104,15 @@ public class UserController {
 
     /**
      * 添加用户
-     * @param userAddRequest
+     * @param userRegisterRequest
      * @param request
      * @return
      */
     @PostMapping("/add")
-    @AuthCheck(permissionName = "用户添加权限", requirePermission = "client:add")
-    public BaseResponse<Long> addUser(@RequestBody UserAddRequest userAddRequest, HttpServletRequest request) {
-        if (userAddRequest == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        User user = new User();
-        BeanUtils.copyProperties(userAddRequest, user);
-        boolean result = userService.save(user);
-        if (!result) {
-            throw new BusinessException(ErrorCode.OPERATION_ERROR);
-        }
-        return ResultUtils.success(user.getId());
+    @AuthCheck(permissionName = "添加用户的权限", requirePermission = "client:add")
+    public BaseResponse<Long> addUser(@RequestBody UserRegisterRequest userRegisterRequest, HttpServletRequest request) {
+        long l = userService.userRegister(userRegisterRequest);
+        return ResultUtils.success(l);
     }
 
     /**

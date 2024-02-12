@@ -1,7 +1,11 @@
 package com.aqua.rbaccore.service;
 
+import com.aqua.rbaccommon.common.DeleteRequest;
+import com.aqua.rbaccore.model.dto.user.UserLoginRequest;
+import com.aqua.rbaccore.model.dto.user.UserRegisterRequest;
 import com.aqua.rbaccore.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -13,12 +17,11 @@ public interface UserService extends IService<User> {
 
     /**
      * 用户登录
-     * @param userAccount
-     * @param userPassword
+     * @param userLoginRequest
      * @param request
      * @return
      */
-    User userLogin(String userAccount, String userPassword, HttpServletRequest request);
+    User userLogin(UserLoginRequest userLoginRequest, HttpServletRequest request);
 
     /**
      * 用户注销
@@ -36,20 +39,16 @@ public interface UserService extends IService<User> {
     User getLoginUser(HttpServletRequest request);
 
     /**
-     * 获取当前登录用户所拥有角色的权限
-     * @param request
+     * 用户注册
+     * @param userRegisterRequest
      * @return
      */
-    String getLoginUserPermission(HttpServletRequest request);
+    long userRegister(UserRegisterRequest userRegisterRequest);
 
     /**
-     * 用户注册
-     * @param userAccount
-     * @param userPassword
-     * @param checkPassword
-     * @return id
+     * 用户注销账户
+     * @param deleteRequest
+     * @return
      */
-    long userRegister(String username, String userAccount, String userPassword, String checkPassword
-            , String phoneNumber);
-
+    Boolean deleteUser(DeleteRequest deleteRequest);
 }

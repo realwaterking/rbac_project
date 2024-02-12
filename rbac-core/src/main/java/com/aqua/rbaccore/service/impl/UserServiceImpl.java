@@ -2,9 +2,12 @@ package com.aqua.rbaccore.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.aqua.rbaccommon.common.DeleteRequest;
 import com.aqua.rbaccommon.common.ErrorCode;
 import com.aqua.rbaccore.exception.BusinessException;
 import com.aqua.rbaccore.mapper.UserMapper;
+import com.aqua.rbaccore.model.dto.user.UserLoginRequest;
+import com.aqua.rbaccore.model.dto.user.UserRegisterRequest;
 import com.aqua.rbaccore.model.entity.User;
 import com.aqua.rbaccore.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -38,7 +41,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public static final String SALT = "i love you, the beautiful girl";
 
     @Override
-    public User userLogin(String userAccount, String userPassword, HttpServletRequest request) {
+    public User userLogin(UserLoginRequest userLoginRequest, HttpServletRequest request) {
+        String userAccount = userLoginRequest.getUserAccount();
+        String userPassword = userLoginRequest.getUserPassword();
         //1. 校验
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
@@ -94,21 +99,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public String getLoginUserPermission(HttpServletRequest request) {
-        return null;
-    }
-
-    @Override
-    public long userRegister(String username, String userAccount, String userPassword, String checkPassword, String phoneNumber) {
+    public long userRegister(UserRegisterRequest userRegisterRequest) {
+        String userPassword = userRegisterRequest.getUserPassword();
+        String checkPassword = userRegisterRequest.getCheckPassword();
+        String userAccount = userRegisterRequest.getUserAccount();
+        String username = userRegisterRequest.getUsername();
+        String location = userRegisterRequest.getLocation();
+        String phoneNumber = userRegisterRequest.getPhoneNumber();
         // 1. 校验
-        if (StringUtils.isAnyBlank(username, userAccount,userPassword, checkPassword, phoneNumber)) {
+        if (userRegisterRequest == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (StringUtils.isAnyBlank(location, username, userAccount,userPassword, checkPassword, phoneNumber)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
         }
         if (userAccount.length() < 4) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户账号过短");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账户长度不能小于4位");
         }
         if (userPassword.length() < 8 || checkPassword.length() < 8) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户密码过短");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户密码不能小于八位");
         }
         if(!userPassword.equals(checkPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "两次输入的密码不一致");
@@ -134,8 +143,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             User user = new User();
             user.setUsername(username);
             user.setUserAccount(userAccount);
-            user.setPassword(encryptPassword);
             user.setPhoneNumber(phoneNumber);
+            user.setUserPassword(encryptPassword);
+            user.setLocation(location);
             user.setAccessKey(accessKey);
             user.setSecretKey(secretKey);
             boolean saveResult = this.save(user);
@@ -143,6 +153,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败, 数据库错误");
             }
             return user.getId();
+        }
+    }
+
+    @Override
+    public Boolean deleteUser(DeleteRequest deleteRequest) {
+        try {
+            if (deleteRequest.getId() <= 0) {
+                throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            }
+            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id", deleteRequest.getId());
+            User user = userMapper.selectOne(queryWrapper);
+            user.setIsDelete(1);
+            return true;
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
         }
     }
 }

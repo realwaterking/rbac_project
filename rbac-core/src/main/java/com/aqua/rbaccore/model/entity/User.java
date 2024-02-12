@@ -35,7 +35,7 @@ public class User implements Serializable {
     /**
      * 用户密码
      */
-    private String password;
+    private String userPassword;
 
     /**
      * 用户手机号码

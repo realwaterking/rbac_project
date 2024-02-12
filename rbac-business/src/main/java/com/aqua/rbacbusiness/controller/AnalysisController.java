@@ -17,11 +17,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,42 +38,35 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AnalysisController {
 
-    @Resource
+    @Autowired
     private FireDataMapper fireDataMapper;
 
-    @Resource
+    @Autowired
     private FireDataService fireDataService;
 
-    @Resource
+    @Autowired
     private FireMaintenanceService fireMaintenanceService;
 
-    @Resource
+    @Autowired
     private FireFacilityService fireFacilityService;
 
     /**
-     * 获取报警数前三的设备信息
+     * 获取报警频率前三的设备信息
      *
      * @return
      */
     @GetMapping("/top/data/invoke")
-    @AuthCheck(permissionName = "查看报警数前三的设备", requirePermission = "invoke:top3")
+    @AuthCheck(permissionName = "查看报警频率前三的设备", requirePermission = "invoke:top3")
     public BaseResponse<List<DataInfoVO>> listTopInvokeFireData() {
-        List<FireData> fireDataList = fireDataMapper.listTopInvokeFireData(3);
-        Map<Long, List<FireData>> fireDataObjMap = fireDataList.stream()
-                .collect(Collectors.groupingBy(FireData::getId));
-        QueryWrapper<FireData> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("id", fireDataObjMap.keySet());
-        List<FireData> list = fireDataService.list(queryWrapper);
+        List<FireData> fireDataList = fireDataService.listTopInvokeFireData(3);
 
-        if (CollectionUtils.isEmpty(list)) {
+        if (CollectionUtils.isEmpty(fireDataList)) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR);
         }
 
-        List<DataInfoVO> dataInfoVOList = list.stream().map(fireData -> {
+        List<DataInfoVO> dataInfoVOList = fireDataList.stream().map(fireData -> {
             DataInfoVO dataInfoVO = new DataInfoVO();
             BeanUtils.copyProperties(fireData, dataInfoVO);
-            int totalNum = fireDataObjMap.get(fireData.getId()).get(0).getTotalNum();
-            dataInfoVO.setTotalNum(totalNum);
             return dataInfoVO;
         }).collect(Collectors.toList());
 

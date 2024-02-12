@@ -6,6 +6,7 @@ create table if not exists user(
     id BIGINT not null auto_increment comment '用户主键' primary key ,
     username varchar(256) not null comment '用户名称',
     userAccount varchar(256) not null comment '用户账号',
+    userPassword varchar(256) not null comment '加密密码',
     phoneNumber varchar(128) null comment '用户手机号码',
     location varchar(256) not null comment '用户地址(社区)',
     accessKey varchar(512) not null comment 'accessKey',
@@ -85,7 +86,6 @@ create table if not exists fire_data(
     alarmType varchar(256) comment '报警类型',
     alarmTime DATETIME default current_timestamp not null comment '报警时间',
     alarmLocation varchar(256) comment '报警位置',
-    totalNum int not null comment '报警次数',
     foreign key (deviceId) references fire_facility(id)
 )comment '消防设备产生报警数据记录表';
 

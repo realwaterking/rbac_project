@@ -33,6 +33,11 @@ public class Permission implements Serializable {
     private String permissionDesc;
 
     /**
+     * 权限表达
+     */
+    private String requiredPermission;
+
+    /**
      * 创建时间
      */
     private Date createTime;

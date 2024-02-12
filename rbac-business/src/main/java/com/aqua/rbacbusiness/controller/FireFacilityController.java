@@ -17,9 +17,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FireFacilityController {
 
-    @Resource
+    @Autowired
     private FireFacilityService fireFacilityService;
 
     /**
@@ -112,18 +113,16 @@ public class FireFacilityController {
     @GetMapping("/list")
     @AuthCheck(permissionName = "获取消防设备信息列表的权限", requirePermission = "fireFacility:selectList")
     public BaseResponse<List<FireFacilityVO>> listFireFacility(FireFacilityQueryRequest fireFacilityQueryRequest) {
-        FireFacility fireFacilityQuery = new FireFacility();
-        if (fireFacilityQueryRequest != null) {
-            BeanUtils.copyProperties(fireFacilityQueryRequest, fireFacilityQuery);
+        List<FireFacility> facilityList = fireFacilityService.list();
+        List<FireFacilityVO> list = new ArrayList<>();
+        for (FireFacility fireFacility : facilityList) {
+            if (facilityList != null) {
+                FireFacilityVO fireFacilityVO = new FireFacilityVO();
+                BeanUtils.copyProperties(fireFacility, fireFacilityVO);
+                list.add(fireFacilityVO);
+            }
         }
-        QueryWrapper<FireFacility> queryWrapper = new QueryWrapper<>(fireFacilityQuery);
-        List<FireFacility> fireFacilityList = fireFacilityService.list(queryWrapper);
-        List<FireFacilityVO> fireFacilityVOList = fireFacilityList.stream().map(fireFacility -> {
-            FireFacilityVO fireFacilityVO = new FireFacilityVO();
-            BeanUtils.copyProperties(fireFacility, fireFacilityVO);
-            return fireFacilityVO;
-        }).collect(Collectors.toList());
-        return ResultUtils.success(fireFacilityVOList);
+        return ResultUtils.success(list);
     }
 
     /**
@@ -153,5 +152,7 @@ public class FireFacilityController {
         fireFacilityVOPage.setRecords(fireFacilityVOList);
         return ResultUtils.success(fireFacilityVOPage);
     }
+
+
 
 }

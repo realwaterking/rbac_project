@@ -18,7 +18,6 @@
             <result property="alarmType" column="alarmType" jdbcType="VARCHAR"/>
             <result property="alarmTime" column="alarmTime" jdbcType="TIMESTAMP"/>
             <result property="alarmLocation" column="alarmLocation" jdbcType="VARCHAR"/>
-            <result property="totalNum" column="totalNum" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -28,8 +27,4 @@
         connectionStatus,alarmType,alarmTime,
         alarmLocation
     </sql>
-    <select id="listTopInvokeFireData" resultType="com.aqua.rbacbusiness.model.entity.FireData">
-        select id, sum(totalNum) as totalNum from fire_data group by id
-        order by totalNum desc limit #{limit};
-    </select>
 </mapper>

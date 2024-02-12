@@ -17,9 +17,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RoleController {
 
-    @Resource
+    @Autowired
     private RoleService roleService;
 
     /**

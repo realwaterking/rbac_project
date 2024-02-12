@@ -19,6 +19,4 @@ public class DataInfoVO implements Serializable {
 
     private Integer status;
 
-    private Integer totalNum;
-
 }

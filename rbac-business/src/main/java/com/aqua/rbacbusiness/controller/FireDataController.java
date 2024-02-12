@@ -17,9 +17,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FireDataController {
 
-    @Resource
+    @Autowired
     private FireDataService fireDataService;
 
     /**
@@ -111,15 +112,15 @@ public class FireDataController {
     @GetMapping("/list")
     @AuthCheck(permissionName = "获取消防报警信息列表", requirePermission = "fireData:list")
     public BaseResponse<List<FireDataVO>> listFireData() {
-        FireData fireDataQuery = new FireData();
-        QueryWrapper<FireData> queryWrapper = new QueryWrapper<>(fireDataQuery);
+        QueryWrapper<FireData> queryWrapper = new QueryWrapper<>();
         List<FireData> fireDataList = fireDataService.list(queryWrapper);
-        List<FireDataVO> fireDataVOList = fireDataList.stream().map(fireData -> {
+        List<FireDataVO> list = new ArrayList<>();
+        for (FireData fireData : fireDataList) {
             FireDataVO fireDataVO = new FireDataVO();
             BeanUtils.copyProperties(fireData, fireDataVO);
-            return fireDataVO;
-        }).collect(Collectors.toList());
-        return ResultUtils.success(fireDataVOList);
+            list.add(fireDataVO);
+        }
+        return ResultUtils.success(list);
     }
 
     /**

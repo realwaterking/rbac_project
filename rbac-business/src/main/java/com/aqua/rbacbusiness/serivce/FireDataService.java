@@ -3,6 +3,7 @@ package com.aqua.rbacbusiness.serivce;
 import com.aqua.rbacbusiness.model.entity.FireData;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,5 +13,9 @@ import java.util.Map;
 */
 public interface FireDataService extends IService<FireData> {
 
+    List<FireData> listTopInvokeFireData(int limit);
+
     Map<String, Long> getAlarmStatistics();
+
+    void load();
 }

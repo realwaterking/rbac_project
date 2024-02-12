@@ -18,4 +18,6 @@ public class PermissionUpdateRequest implements Serializable {
     private String permissionName;
 
     private String permissionDesc;
+
+    private String requiredPermission;
 }

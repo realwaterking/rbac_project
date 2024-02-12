@@ -8,13 +8,18 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="permissionName" column="permissionName" jdbcType="VARCHAR"/>
             <result property="permissionDesc" column="permissionDesc" jdbcType="VARCHAR"/>
+            <result property="requiredPermission" column="requiredPermission" jdbcType="VARCHAR"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
             <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,permissionName,permissionDesc,
+        id,permissionName,permissionDesc,requiredPermission,
         createTime,updateTime,isDelete
     </sql>
+    <select id="selectPermissions" resultType="java.lang.String">
+        select requiredPermission
+        from permission
+    </select>
 </mapper>

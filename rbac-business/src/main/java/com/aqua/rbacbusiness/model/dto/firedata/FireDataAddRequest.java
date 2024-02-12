@@ -3,7 +3,6 @@ package com.aqua.rbacbusiness.model.dto.firedata;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author water king
@@ -12,7 +11,7 @@ import java.util.Date;
 @Data
 public class FireDataAddRequest implements Serializable {
 
-    private static final long serialVersionUID = 3191241716373120793L;
+    private static final long serialVersionUID = 31912410793L;
 
     private float temperature;
 
@@ -22,7 +21,7 @@ public class FireDataAddRequest implements Serializable {
 
     private float gasConcentration;
 
-    private int illumination;
+    private Integer illumination;
 
     private String deviceStatus;
 
@@ -34,5 +33,5 @@ public class FireDataAddRequest implements Serializable {
 
     private String alarmType;
 
-    private Date alarmLocation;
+    private String alarmLocation;
 }

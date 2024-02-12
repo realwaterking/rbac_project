@@ -1,6 +1,6 @@
 package com.aqua.rbacbusiness.controller;
 
-import com.aqua.rbacbusiness.model.dto.firefacility.FireFacilityQueryRequest;
+import com.aqua.rbacbusiness.model.dto.dispatchdata.DispatchDataQueryRequest;
 import com.aqua.rbacbusiness.model.dto.firemaintenance.FireMaintenanceAddRequest;
 import com.aqua.rbacbusiness.model.entity.FireData;
 import com.aqua.rbacbusiness.model.entity.FireFacility;
@@ -18,12 +18,11 @@ import com.aqua.rbaccore.exception.BusinessException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,13 +35,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MaintenanceController {
 
-    @Resource
+    @Autowired
     private FireMaintenanceService fireMaintenanceService;
 
-    @Resource
+    @Autowired
     private FireFacilityService fireFacilityService;
 
-    @Resource
+    @Autowired
     private FireDataService fireDataService;
 
     /**
@@ -72,24 +71,37 @@ public class MaintenanceController {
      */
     @GetMapping("/list/page")
     @AuthCheck(permissionName = "分页查询消防设备信息的权限", requirePermission = "fireFacility:selectByPage")
-    public BaseResponse<Page<FireFacilityVO>> listFireFacilityByPage(FireFacilityQueryRequest fireFacilityQueryRequest) {
+    public BaseResponse<Page<FireFacilityVO>> listFireFacilityByPage(DispatchDataQueryRequest dispatchDataQueryRequest) {
         long current = 1;
         long size = 5;
-        FireFacility fireFacilityQuery = new FireFacility();
-        if (fireFacilityQueryRequest != null) {
-            BeanUtils.copyProperties(fireFacilityQueryRequest, fireFacilityQuery);
-            current = fireFacilityQueryRequest.getCurrent();
-            size = fireFacilityQueryRequest.getPageSize();
+        if (dispatchDataQueryRequest != null) {
+            current = dispatchDataQueryRequest.getCurrent();
+            size = dispatchDataQueryRequest.getPageSize();
         }
-        QueryWrapper<FireFacility> queryWrapper = new QueryWrapper<>(fireFacilityQuery);
-        Page<FireFacility> fireFacilityPage = fireFacilityService.page(new Page<>(current, size), queryWrapper);
-        Page<FireFacilityVO> fireFacilityVOPage = new PageDTO<>(fireFacilityPage.getCurrent(), fireFacilityPage.getSize(), fireFacilityPage.getTotal());
-        List<FireFacilityVO> fireFacilityVOList = fireFacilityPage.getRecords().stream().map(fireFacility -> {
+
+        // 构建查询条件
+        QueryWrapper<FireFacility> queryWrapper = new QueryWrapper<>();
+        // 这里根据实际情况构建查询条件，示例中假设 dispatchDataQueryRequest 中包含了需要查询的条件
+        if (dispatchDataQueryRequest != null) {
+            // 设置其他查询条件...
+        }
+
+        // 执行分页查询
+        Page<FireFacility> fireFacilityPage = new Page<>(current, size);
+        Page<FireFacility> pageResult = fireFacilityService.page(fireFacilityPage, queryWrapper);
+
+        // 转换结果为 VO 对象
+        List<FireFacilityVO> fireFacilityVOList = pageResult.getRecords().stream().map(fireFacility -> {
             FireFacilityVO fireFacilityVO = new FireFacilityVO();
             BeanUtils.copyProperties(fireFacility, fireFacilityVO);
             return fireFacilityVO;
         }).collect(Collectors.toList());
+
+        // 构建返回结果
+        Page<FireFacilityVO> fireFacilityVOPage = new Page<>();
+        BeanUtils.copyProperties(pageResult, fireFacilityVOPage);
         fireFacilityVOPage.setRecords(fireFacilityVOList);
+
         return ResultUtils.success(fireFacilityVOPage);
     }
 

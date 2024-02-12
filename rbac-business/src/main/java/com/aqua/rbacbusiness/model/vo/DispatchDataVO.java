@@ -21,5 +21,5 @@ public class DispatchDataVO implements Serializable {
 
     private String result;
 
-    private String createTIme;
+    private String createTime;
 }

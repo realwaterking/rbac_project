@@ -5,12 +5,12 @@ import com.aqua.rbacbusiness.serivce.FireFacilityService;
 import com.aqua.rbaccommon.common.BaseResponse;
 import com.aqua.rbaccommon.common.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 public class ClientController {
 
-    @Resource
+    @Autowired
     private FireFacilityService fireFacilityService;
 
 

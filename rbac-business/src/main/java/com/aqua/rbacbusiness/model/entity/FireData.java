@@ -25,22 +25,22 @@ public class FireData implements Serializable {
     /**
      * 环境温度
      */
-    private Double temperature;
+    private float temperature;
 
     /**
      * 湿度
      */
-    private Double humidity;
+    private float humidity;
 
     /**
      * 烟雾浓度
      */
-    private Double smokeConcentration;
+    private float smokeConcentration;
 
     /**
      * 气体浓度
      */
-    private Double gasConcentration;
+    private float gasConcentration;
 
     /**
      * 光照强度
@@ -82,10 +82,6 @@ public class FireData implements Serializable {
      */
     private String alarmLocation;
 
-    /**
-     * 报警次数
-     */
-    private Integer totalNum;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
