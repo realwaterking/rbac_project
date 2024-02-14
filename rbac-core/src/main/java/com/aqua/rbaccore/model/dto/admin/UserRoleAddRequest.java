@@ -3,7 +3,6 @@ package com.aqua.rbaccore.model.dto.admin;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author water king
@@ -16,5 +15,5 @@ public class UserRoleAddRequest implements Serializable {
 
     private Long userId;
 
-    private List<Long> roleId;
+    private Long roleId;
 }

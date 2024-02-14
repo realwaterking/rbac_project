@@ -3,12 +3,12 @@ package com.aqua.rbacbusiness.serivce.impl;
 
 import com.aqua.rbacbusiness.mapper.FireDataMapper;
 import com.aqua.rbacbusiness.mapper.FireFacilityMapper;
+import com.aqua.rbacbusiness.mapper.PermissionMapper;
 import com.aqua.rbacbusiness.model.entity.FireData;
 import com.aqua.rbacbusiness.model.entity.FireFacility;
+import com.aqua.rbacbusiness.model.entity.Permission;
 import com.aqua.rbacbusiness.serivce.FireDataService;
 import com.aqua.rbaccore.annotation.AuthCheck;
-import com.aqua.rbaccore.mapper.PermissionMapper;
-import com.aqua.rbaccore.model.entity.Permission;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.context.ApplicationContext;
@@ -43,18 +43,6 @@ public class FireDataServiceImpl extends ServiceImpl<FireDataMapper, FireData>
     @Resource
     private PermissionMapper permissionMapper;
 
-    @Override
-    public List<FireData> listTopInvokeFireData(int limit) {
-        try {
-            QueryWrapper<FireData> queryWrapper = new QueryWrapper<>();
-            QueryWrapper<FireData> deviceId = queryWrapper.groupBy("deviceId").orderByDesc("count(deviceId)").last("LIMIT 3");
-            List<FireData> fireDataList = fireDataMapper.selectList(deviceId);
-            return fireDataList;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     /**
      * 计算报警设备数和未报警设备数
      * @return
@@ -65,7 +53,7 @@ public class FireDataServiceImpl extends ServiceImpl<FireDataMapper, FireData>
 
         // 查询发生过报警的设备数量
         QueryWrapper<FireData> queryWrapper = new QueryWrapper<>();
-        queryWrapper.select("DISTINCT deviceId");
+        queryWrapper.select("DISTINCT device_id");
         Long numDevicesWithAlarm = fireDataMapper.selectCount(queryWrapper);
         statisticsMap.put("num_devices_with_alarm", numDevicesWithAlarm);
 

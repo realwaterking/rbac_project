@@ -20,7 +20,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -112,15 +111,15 @@ public class FireDataController {
     @GetMapping("/list")
     @AuthCheck(permissionName = "获取消防报警信息列表", requirePermission = "fireData:list")
     public BaseResponse<List<FireDataVO>> listFireData() {
-        QueryWrapper<FireData> queryWrapper = new QueryWrapper<>();
+        FireData fireDataQuery = new FireData();
+        QueryWrapper<FireData> queryWrapper = new QueryWrapper<>(fireDataQuery);
         List<FireData> fireDataList = fireDataService.list(queryWrapper);
-        List<FireDataVO> list = new ArrayList<>();
-        for (FireData fireData : fireDataList) {
+        List<FireDataVO> fireDataVOList = fireDataList.stream().map(fireData -> {
             FireDataVO fireDataVO = new FireDataVO();
             BeanUtils.copyProperties(fireData, fireDataVO);
-            list.add(fireDataVO);
-        }
-        return ResultUtils.success(list);
+            return fireDataVO;
+        }).collect(Collectors.toList());
+        return ResultUtils.success(fireDataVOList);
     }
 
     /**

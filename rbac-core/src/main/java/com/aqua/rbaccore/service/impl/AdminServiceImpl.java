@@ -2,10 +2,7 @@ package com.aqua.rbaccore.service.impl;
 
 import com.aqua.rbaccommon.common.ErrorCode;
 import com.aqua.rbaccore.exception.BusinessException;
-import com.aqua.rbaccore.mapper.PermissionMapper;
-import com.aqua.rbaccore.mapper.RoleMapper;
-import com.aqua.rbaccore.mapper.RolePermissionMapper;
-import com.aqua.rbaccore.mapper.UserRoleMapper;
+import com.aqua.rbaccore.mapper.*;
 import com.aqua.rbaccore.model.dto.admin.*;
 import com.aqua.rbaccore.model.entity.Permission;
 import com.aqua.rbaccore.model.entity.Role;
@@ -17,9 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author water king
@@ -42,46 +37,34 @@ public class AdminServiceImpl implements AdminService {
     private RolePermissionMapper rolePermissionMapper;
 
     @Override
-    public Boolean addUserRole(UserRoleAddRequest userRoleAddRequest) {
+    public Long setUserRole(UserRoleAddRequest userRoleAddRequest) {
         Long result = null;
         try {
             Long userId = userRoleAddRequest.getUserId();
-            List<Long> roleId = userRoleAddRequest.getRoleId();
-            if (userId <= 0) {
-                throw new BusinessException(ErrorCode.SYSTEM_ERROR, "用户id 有误");
+            Long roleId = userRoleAddRequest.getRoleId();
+            if (userId <= 0 || roleId <= 0) {
+                throw new BusinessException(ErrorCode.SYSTEM_ERROR, "用户id 或 角色id 有误");
             }
-            for (Long ids : roleId) {
-                if (ids <= 0) {
-                    throw new BusinessException(ErrorCode.PARAMS_ERROR);
-                }
-                UserRole userRole = new UserRole();
-                userRole.setUserId(userId);
-                userRole.setRoleId(ids);
-                userRoleMapper.insert(userRole);
-            }
+            UserRole userRole = new UserRole();
+            userRole.setUserId(userId);
+            userRole.setRoleId(roleId);
+            result = (long) userRoleMapper.insert(userRole);
         } catch (BusinessException e) {
             throw new RuntimeException(e);
         }
-        return true;
+        return result;
     }
 
     @Override
     public Boolean deleteUserRole(UserRoleDeleteRequest userRoleDeleteRequest) {
         try {
-            List<Long> roleId = userRoleDeleteRequest.getRoleId();
             Long userId = userRoleDeleteRequest.getUserId();
             if (userId <= 0) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "用户id有误");
             }
-            for (Long ids : roleId) {
-                if (ids <= 0) {
-                    throw new BusinessException(ErrorCode.PARAMS_ERROR);
-                }
-                QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("userId", userId);
-                queryWrapper.eq("roleId", ids);
-                userRoleMapper.delete(queryWrapper);
-            }
+            QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("userId", userId);
+            userRoleMapper.delete(queryWrapper);
         } catch (BusinessException e) {
             throw new RuntimeException(e);
         }
@@ -89,29 +72,26 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Role> getUserRole(UserRoleGetRequest userRoleGetRequest) {
-        try {
-            Long userId = userRoleGetRequest.getUserId();
-            if (userId <= 0) {
-                throw new BusinessException(ErrorCode.PARAMS_ERROR);
-            }
-            QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("userId", userId);
-            UserRole userRole = userRoleMapper.selectOne(queryWrapper);
-            QueryWrapper<Role> queryWrapper1 = new QueryWrapper<>();
-            queryWrapper1.eq("id", userRole.getRoleId());
-            List<Role> roleList = roleMapper.selectList(queryWrapper1);
-            return roleList;
-        } catch (BusinessException e) {
-            throw new RuntimeException(e);
+    public Role getUserRole(UserRoleGetRequest userRoleGetRequest) {
+        Long roleId = null;
+        Long userId = userRoleGetRequest.getUserId();
+        if (userId <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userId", userId);
+        UserRole userRole = userRoleMapper.selectOne(queryWrapper);
+        QueryWrapper<Role> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("id", userRole.getRoleId());
+        Role role = roleMapper.selectOne(queryWrapper1);
+        return role;
     }
 
     @Override
     public List<Long> addRolePermission(RolePermissionAddRequest rolePermissionAddRequest) {
-        List<Long> list;
+        List<Long> list = null;
         try {
-            list = new ArrayList<>();
+            list = null;
             Long roleId = rolePermissionAddRequest.getRoleId();
             List<Long> permissionIds = rolePermissionAddRequest.getPermissionId();
             if (roleId <= 0 || permissionIds == null) {
@@ -142,7 +122,7 @@ public class AdminServiceImpl implements AdminService {
                 QueryWrapper<RolePermission> queryWrapper = new QueryWrapper<>();
                 queryWrapper.eq("roleId",roleId);
                 queryWrapper.eq("permissionId", permissionId);
-                rolePermissionMapper.delete(queryWrapper);
+                Long result = (long) rolePermissionMapper.delete(queryWrapper);
             }
         } catch (BusinessException e) {
             throw new RuntimeException(e);
@@ -152,10 +132,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<Permission> getRolePermission(RolePermissionGetRequest rolePermissionGetRequest) {
-        List<Permission> list;
+        List<Permission> list = null;
 
         try {
-            list = new ArrayList<>();
+            list = null;
             Long roleId = rolePermissionGetRequest.getRoleId();
             if (roleId <= 0) {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -163,12 +143,12 @@ public class AdminServiceImpl implements AdminService {
             QueryWrapper<RolePermission> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("roleId", roleId);
             List<RolePermission> rolePermissions = rolePermissionMapper.selectList(queryWrapper);
-
-            if (!rolePermissions.isEmpty()) {
-                List<Long> permissionIds = rolePermissions.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());
-                QueryWrapper<Permission> permissionQueryWrapper = new QueryWrapper<>();
-                permissionQueryWrapper.in("id", permissionIds);
-                list = permissionMapper.selectList(permissionQueryWrapper);
+            QueryWrapper<Permission> wrapper = new QueryWrapper<>();
+            for (RolePermission rolePermission : rolePermissions) {
+                Long permissionId = rolePermission.getPermissionId();
+                wrapper.eq("id", permissionId);
+                Permission permission = permissionMapper.selectOne(wrapper);
+                list.add(permission);
             }
         } catch (BusinessException e) {
             throw new RuntimeException(e);
@@ -176,5 +156,4 @@ public class AdminServiceImpl implements AdminService {
 
         return list;
     }
-
 }

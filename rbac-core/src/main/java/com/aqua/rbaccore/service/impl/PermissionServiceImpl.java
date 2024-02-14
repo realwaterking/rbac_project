@@ -2,11 +2,8 @@ package com.aqua.rbaccore.service.impl;
 
 import com.aqua.rbaccore.annotation.AuthCheck;
 import com.aqua.rbaccore.mapper.PermissionMapper;
-import com.aqua.rbaccore.mapper.RolePermissionMapper;
 import com.aqua.rbaccore.model.entity.Permission;
-import com.aqua.rbaccore.model.entity.RolePermission;
 import com.aqua.rbaccore.service.PermissionService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -15,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
 * @author 70742
@@ -32,9 +31,6 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     @Resource
     private PermissionMapper permissionMapper;
-
-    @Resource
-    private RolePermissionMapper rolePermissionMapper;
 
     @Override
     public String load() {
@@ -61,30 +57,6 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         }
         return "ok";
     }
-
-    @Override
-    public List<String> getPermissionList(Long roleId) {
-        try {
-            QueryWrapper<RolePermission> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("roleId", roleId);
-            List<RolePermission> rolePermissionList = rolePermissionMapper.selectList(queryWrapper);
-
-            Set<String> permissionSet = new HashSet<>(); // 使用 Set 来避免重复权限
-            for (RolePermission rolePermission : rolePermissionList) {
-                Long permissionId = rolePermission.getPermissionId();
-                QueryWrapper<Permission> wrapper = new QueryWrapper<>();
-                wrapper.eq("id", permissionId);
-                Permission permission = permissionMapper.selectOne(wrapper);
-                if (permission != null) { // 添加 null 检查
-                    permissionSet.add(permission.getRequiredPermission());
-                }
-            }
-            return new ArrayList<>(permissionSet);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }
 
 

@@ -17,7 +17,7 @@ public interface AdminService {
      * @param userRoleAddRequest
      * @return
      */
-    Boolean addUserRole(UserRoleAddRequest userRoleAddRequest);
+    Long setUserRole(UserRoleAddRequest userRoleAddRequest);
 
     /**
      * 删除用户的角色信息
@@ -32,7 +32,7 @@ public interface AdminService {
      * @param userRoleGetRequest
      * @return
      */
-    List<Role> getUserRole(UserRoleGetRequest userRoleGetRequest);
+    Role getUserRole(UserRoleGetRequest userRoleGetRequest);
 
     /**
      * 给角色赋予权限

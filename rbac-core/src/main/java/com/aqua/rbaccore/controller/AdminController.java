@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,16 @@ public class AdminController {
         }
         Boolean b = adminService.addUserRole(userRoleAddRequest);
         return ResultUtils.success(b);
+
+    public BaseResponse<Long> setUserRole(@RequestBody UserRoleAddRequest userRoleAddRequest) {
+        if (userRoleAddRequest == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (userRoleAddRequest.getUserId() <= 0 || userRoleAddRequest.getRoleId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Long result = adminService.setUserRole(userRoleAddRequest);
+        return ResultUtils.success(result);
     }
 
     /**
@@ -77,7 +88,11 @@ public class AdminController {
      */
     @PostMapping("/link/get")
     @AuthCheck(permissionName = "获得用户所拥有的角色", requirePermission = "admin:getUserRole")
+
     public BaseResponse<List<RoleVO>> getUserRole(@RequestBody UserRoleGetRequest userRoleGetRequest) {
+
+    public BaseResponse<RoleVO> getUserRole(@RequestBody UserRoleGetRequest userRoleGetRequest) {
+
         if (userRoleGetRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -93,6 +108,10 @@ public class AdminController {
             roleVOList.add(roleVO);
         }
         return ResultUtils.success(roleVOList);
+        Role userRole = adminService.getUserRole(userRoleGetRequest);
+        RoleVO roleVO = new RoleVO();
+        BeanUtils.copyProperties(userRole, roleVO);
+        return ResultUtils.success(roleVO);
     }
 
     /**
@@ -138,8 +157,7 @@ public class AdminController {
         Boolean b = adminService.deleteRolePermission(rolePermissionDeleteRequest);
         return ResultUtils.success(b);
     }
-
-     /**
+    /**
      * 获取角色所拥有的所有权限
      * @param rolePermissionGetRequest
      * @return
@@ -150,7 +168,6 @@ public class AdminController {
         if (rolePermissionGetRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-
         if (rolePermissionGetRequest.getRoleId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -162,6 +179,13 @@ public class AdminController {
                 BeanUtils.copyProperties(permission, permissionVO);
                 list.add(permissionVO);
             }
+=======
+        PermissionVO permissionVO = new PermissionVO();
+        List<PermissionVO> list = null;
+        for (Permission permission : rolePermission) {
+            BeanUtils.copyProperties(permission, permissionVO);
+            list.add(permissionVO);
+>>>>>>> origin/master
         }
         return ResultUtils.success(list);
     }
